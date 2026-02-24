@@ -113,11 +113,11 @@ wmcp-annotate validate https://example.com --strict --ci
 | **Pro** | $49/mo | Unlimited AI, inject command, CI integration |
 | **Enterprise** | $499/mo | Team workspaces, SSO, audit logs, priority support |
 
-## Enterprise
+## Contact
 
-For enterprise licensing, custom integrations, or implementation support:
+For enterprise licensing, custom integrations, or support:
 
-📧 [enterprise@avatarconsulting.com](mailto:enterprise@avatarconsulting.com)
+📧 [rsatyan@gmail.com](mailto:rsatyan@gmail.com)
 
 ## Why wmcp-annotate?
 
@@ -125,16 +125,11 @@ For enterprise licensing, custom integrations, or implementation support:
 - **AI-powered**: Smart tool suggestions, not just DOM parsing
 - **Framework support**: React, Vue, Svelte, vanilla JS
 - **CI-ready**: GitHub Actions integration out of the box
-- **Enterprise-grade**: Audit logs, SSO, team workspaces
 
 ## Contributing
 
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+We welcome contributions! Open an issue or submit a PR.
 
 ## License
 
-MIT © [Avatar Consulting](https://avatarconsulting.com)
-
----
-
-Built with ❤️ by [Avatar Consulting](https://avatarconsulting.com) — AI Transformation for Financial Services
+MIT

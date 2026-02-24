@@ -1,0 +1,17 @@
+# Exclude from npm package
+AGENTS.md
+PROMPT.md
+IMPLEMENTATION_PLAN.md
+PRD.md
+LAUNCH.md
+marketing/
+specs/
+tests/
+src/
+docs/
+scripts/
+*.ts
+tsconfig.json
+.git/
+.gitignore
+*.map

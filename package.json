@@ -26,15 +26,14 @@
     "mcp",
     "model-context-protocol"
   ],
-  "author": "Avatar Consulting <hello@avatarconsulting.com>",
+  "author": "Satyan Avatara <rsatyan@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/avatarconsulting/wmcp-annotate"
+    "url": "https://github.com/rsatyan/wmcp-annotate"
   },
-  "homepage": "https://wmcp-annotate.dev",
   "bugs": {
-    "url": "https://github.com/avatarconsulting/wmcp-annotate/issues"
+    "url": "https://github.com/rsatyan/wmcp-annotate/issues"
   },
   "engines": {
     "node": ">=20.0.0"
