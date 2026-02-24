@@ -28,6 +28,14 @@ npm install -g wmcp-annotate
 
 **Zero additional setup required.** Works instantly for static HTML sites.
 
+### Quick Run (no install)
+
+```bash
+npx github:rsatyan/wmcp-annotate scan https://example.com
+```
+
+> **Note:** Requires npm 10+ for npx from GitHub. Update with `npm install -g npm@latest` if needed.
+
 ## Quick Start
 
 ```bash
