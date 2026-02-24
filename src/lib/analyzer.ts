@@ -100,7 +100,15 @@ Respond with valid JSON only:
 
     try {
       const responseText = await this.callAI(config, prompt);
-      const json = JSON.parse(responseText);
+      
+      // Extract JSON from response (handle markdown code blocks)
+      let jsonStr = responseText;
+      const jsonMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)```/);
+      if (jsonMatch) {
+        jsonStr = jsonMatch[1];
+      }
+      
+      const json = JSON.parse(jsonStr.trim());
       
       return {
         name: json.name,
@@ -132,7 +140,18 @@ Respond with valid JSON only:
   }
 
   private async callAnthropic(config: AIConfig, prompt: string): Promise<string> {
-    const { default: Anthropic } = await import('@anthropic-ai/sdk');
+    // Dynamic import to avoid requiring the SDK if not using Anthropic
+    let Anthropic;
+    try {
+      const module = await import('@anthropic-ai/sdk');
+      Anthropic = module.default;
+    } catch {
+      throw new Error(
+        'Anthropic SDK not installed. Install it with:\n' +
+        '  npm install @anthropic-ai/sdk'
+      );
+    }
+    
     const client = new Anthropic({ apiKey: config.apiKey });
     
     const response = await client.messages.create({
@@ -163,7 +182,8 @@ Respond with valid JSON only:
     });
 
     if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.statusText}`);
+      const error = await response.text();
+      throw new Error(`OpenAI API error: ${response.status} ${error}`);
     }
 
     const data = await response.json();

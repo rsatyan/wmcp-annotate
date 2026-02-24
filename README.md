@@ -9,35 +9,16 @@
 
 ## The WebMCP Moment
 
-In February 2026, Google and Microsoft quietly shipped one of the most significant changes to web architecture since REST APIs: **WebMCP** (Web Model Context Protocol).
+In February 2026, Google and Microsoft shipped WebMCP in Chrome 146 — a W3C standard that lets websites declare structured tools for AI agents.
 
-This W3C standard fundamentally changes how AI agents interact with websites. Instead of fragile DOM scraping or expensive screenshot analysis, websites can now declare structured tools that agents call directly.
+This isn't incremental. It's architectural.
 
-**The implications are massive:**
-- 89% reduction in tokens for web interactions
-- Stable automation that doesn't break when CSS changes
-- A new primitive for agent-to-web communication
+**Before WebMCP:** Agents scraped DOM (fragile) or parsed screenshots (expensive).
+**After WebMCP:** Websites declare capabilities. Agents call tools directly.
 
-But here's the problem: the standard exists, browsers support it, yet **99% of websites have zero WebMCP annotations**.
+The problem isn't the standard. It's adoption. **99% of websites have zero WebMCP annotations.**
 
-Someone needs to bridge that gap. That's why I built `wmcp-annotate`.
-
-## What This Tool Does
-
-`wmcp-annotate` analyzes any website and generates WebMCP tool annotations automatically:
-
-```bash
-# Scan a site and discover actionable elements
-wmcp-annotate scan https://example.com
-
-# Generate WebMCP tool definitions using AI
-wmcp-annotate suggest https://example.com
-
-# Output production-ready code
-wmcp-annotate generate https://example.com --format typescript
-```
-
-It's the fastest path from "website" to "AI-agent ready."
+That's why this exists.
 
 ## Installation
 
@@ -45,21 +26,96 @@ It's the fastest path from "website" to "AI-agent ready."
 npm install -g wmcp-annotate
 ```
 
+**Zero additional setup required.** Works instantly for static HTML sites.
+
+## Quick Start
+
+```bash
+# Scan a website (instant, no dependencies)
+wmcp-annotate scan https://example.com
+
+# Generate WebMCP tool definitions with AI
+wmcp-annotate suggest https://example.com
+
+# Output production-ready code
+wmcp-annotate generate https://example.com --format typescript
+```
+
+## Commands
+
+### `scan` — Analyze a website
+
+Discovers forms, buttons, links, and interactive elements.
+
+```bash
+# Default: Fast HTML parsing (works for most sites)
+wmcp-annotate scan https://example.com
+
+# For JavaScript-heavy SPAs (requires Playwright setup)
+wmcp-annotate scan https://react-app.com --browser
+```
+
+**Output:**
+```json
+{
+  "url": "https://example.com",
+  "elements": [
+    {
+      "type": "form",
+      "selector": "#search",
+      "label": "Search",
+      "inputs": [{ "name": "q", "type": "text" }]
+    }
+  ]
+}
+```
+
+### `suggest` — Generate tool definitions
+
+Uses AI to create meaningful WebMCP tool definitions from scan results.
+
+```bash
+wmcp-annotate suggest https://example.com
+wmcp-annotate suggest --scan-file scan.json --output tools.json
+```
+
+Requires an AI provider (see [Configuration](#ai-provider-configuration)).
+
+### `generate` — Output production code
+
+Creates ready-to-use JavaScript/TypeScript code.
+
+```bash
+wmcp-annotate generate https://example.com --format js
+wmcp-annotate generate https://example.com --format typescript
+wmcp-annotate generate https://example.com --format react
+```
+
+### `validate` — Check compliance
+
+Validates existing WebMCP implementations against the spec.
+
+```bash
+wmcp-annotate validate https://example.com
+wmcp-annotate validate https://example.com --ci  # Exit 1 on issues
+```
+
 ## AI Provider Configuration
 
-The `suggest` command uses AI to generate intelligent tool definitions. Configure your preferred provider:
-
-**Anthropic:**
-```bash
-export ANTHROPIC_API_KEY=sk-ant-...
-```
+The `suggest` command requires an AI provider. Configure one:
 
 **OpenAI:**
 ```bash
 export OPENAI_API_KEY=sk-...
 ```
 
-**Any OpenAI-compatible API (Groq, Together, Fireworks, etc.):**
+**Anthropic:**
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+npm install @anthropic-ai/sdk  # Required for Anthropic
+```
+
+**OpenAI-compatible APIs (Groq, Together, etc.):**
 ```bash
 export OPENAI_API_KEY=your_key
 export OPENAI_BASE_URL=https://api.groq.com/openai
@@ -72,36 +128,19 @@ export OLLAMA_HOST=http://localhost:11434
 export WMCP_MODEL=llama3
 ```
 
-You bring your own keys. You control your costs.
+## Browser Mode (for SPAs)
 
-## Commands
+By default, `wmcp-annotate` uses fast HTML parsing which works for 80%+ of websites.
 
-### `scan`
-Discovers forms, buttons, links, and API endpoints. No AI required.
-
-```bash
-wmcp-annotate scan https://example.com --depth 3 --output scan.json
-```
-
-### `suggest`
-Uses AI to generate semantic tool definitions from scan results.
+For JavaScript-heavy single-page apps (React, Vue, Angular), use `--browser` mode:
 
 ```bash
-wmcp-annotate suggest https://example.com --output tools.json
-```
+# One-time setup
+npm install playwright
+npx playwright install chromium
 
-### `generate`
-Outputs production code for React, Vue, Svelte, or vanilla JS.
-
-```bash
-wmcp-annotate generate https://example.com --format react
-```
-
-### `validate`
-Checks existing WebMCP implementations for spec compliance.
-
-```bash
-wmcp-annotate validate https://example.com --ci
+# Scan with browser engine
+wmcp-annotate scan https://react-app.com --browser
 ```
 
 ## Example Output
@@ -128,20 +167,9 @@ navigator.modelContext.registerTool({
 
 ## Why Open Source?
 
-WebMCP adoption needs to happen fast. The standard is ready. The browsers are ready. The AI agents are ready. The only bottleneck is tooling.
+WebMCP adoption benefits everyone building AI agents. Gatekeeping the tooling slows the ecosystem.
 
-By open-sourcing `wmcp-annotate`, I'm betting that:
-1. Community contributions will make it better faster
-2. Broad adoption creates a healthier ecosystem
-3. The real value is in what gets built on top of WebMCP, not in gatekeeping the tools
-
-If you're building AI agents, internal tools, or thinking about web automation—this is the moment to pay attention.
-
-## Contributing
-
-PRs welcome. Issues welcome. Ideas welcome.
-
-If you're working on WebMCP adoption in your organization and want to chat, reach out.
+This tool is MIT licensed. Fork it. Ship it. Make it better.
 
 ## Author
 

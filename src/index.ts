@@ -11,7 +11,7 @@ const program = new Command();
 program
   .name('wmcp-annotate')
   .description('Make any website AI-agent ready with WebMCP annotations')
-  .version('1.0.0');
+  .version('1.0.1');
 
 program
   .command('scan <url>')
@@ -19,6 +19,7 @@ program
   .option('-d, --depth <number>', 'How many pages deep to crawl', '1')
   .option('-o, --output <file>', 'Output file')
   .option('-f, --format <format>', 'Output format: json, table, markdown', 'json')
+  .option('-b, --browser', 'Use browser engine for JavaScript-heavy sites (requires Playwright)')
   .option('-v, --verbose', 'Show detailed progress')
   .action(scanCommand);
 

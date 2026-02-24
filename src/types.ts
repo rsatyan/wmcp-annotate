@@ -1,7 +1,7 @@
 // Core types for wmcp-annotate
 
 export interface ScannedElement {
-  type: 'form' | 'button' | 'link' | 'api';
+  type: 'form' | 'button' | 'link' | 'api' | 'search';
   id?: string;
   selector: string;
   label: string;
@@ -10,6 +10,8 @@ export interface ScannedElement {
     selector: string;
     label: string;
   };
+  action?: string;
+  method?: string;
   context?: string;
 }
 
@@ -34,6 +36,10 @@ export interface ScanResult {
   scannedAt: string;
   elements: ScannedElement[];
   apiCalls: ApiCall[];
+  meta?: {
+    scanner: 'cheerio' | 'playwright';
+    note?: string;
+  };
 }
 
 export interface ToolSuggestion {
@@ -101,6 +107,7 @@ export interface ScanOptions {
   output?: string;
   format: string;
   verbose?: boolean;
+  browser?: boolean;
 }
 
 export interface SuggestOptions {

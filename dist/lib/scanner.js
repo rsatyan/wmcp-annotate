@@ -1,15 +1,155 @@
-import { chromium } from 'playwright';
+import * as cheerio from 'cheerio';
 class Scanner {
-    browser = null;
     async scan(url, options = {}) {
-        const { depth = 1, verbose = false } = options;
-        await this.ensureBrowser();
-        const page = await this.browser.newPage();
+        const { browser = false } = options;
+        if (browser) {
+            return this.scanWithBrowser(url, options);
+        }
+        return this.scanWithCheerio(url, options);
+    }
+    /**
+     * Default: Fast, lightweight HTML scanning with Cheerio
+     * Works for static HTML sites (80%+ of websites)
+     */
+    async scanWithCheerio(url, options) {
+        const response = await fetch(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (compatible; wmcp-annotate/1.0)',
+            },
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
+        }
+        const html = await response.text();
+        const $ = cheerio.load(html);
+        const elements = [];
+        // Scan forms
+        $('form').each((_, form) => {
+            const $form = $(form);
+            const id = $form.attr('id');
+            const action = $form.attr('action');
+            const method = $form.attr('method') || 'GET';
+            const inputs = [];
+            $form.find('input, select, textarea').each((_, input) => {
+                const $input = $(input);
+                const name = $input.attr('name');
+                const type = $input.attr('type') || 'text';
+                const required = $input.attr('required') !== undefined;
+                const placeholder = $input.attr('placeholder');
+                // Get label
+                const inputId = $input.attr('id');
+                let label;
+                if (inputId) {
+                    label = $(`label[for="${inputId}"]`).text().trim() || undefined;
+                }
+                if (name && type !== 'hidden' && type !== 'submit') {
+                    inputs.push({
+                        name,
+                        type,
+                        label,
+                        required,
+                        placeholder: placeholder || undefined,
+                    });
+                }
+            });
+            // Get submit button text
+            const submitBtn = $form.find('button[type="submit"], input[type="submit"]').first();
+            const submitLabel = submitBtn.attr('value') || submitBtn.text().trim() || 'Submit';
+            elements.push({
+                type: 'form',
+                id: id || undefined,
+                selector: id ? `#${id}` : 'form',
+                label: $form.attr('aria-label') || $form.attr('title') || 'Form',
+                inputs,
+                action: action || undefined,
+                method,
+                submitButton: {
+                    selector: id ? `#${id} [type="submit"]` : 'form [type="submit"]',
+                    label: submitLabel,
+                },
+            });
+        });
+        // Scan standalone buttons (not in forms)
+        $('button:not(form button), [role="button"]').each((_, button) => {
+            const $button = $(button);
+            const label = $button.text().trim();
+            const id = $button.attr('id');
+            if (label) {
+                elements.push({
+                    type: 'button',
+                    id: id || undefined,
+                    selector: id ? `#${id}` : this.getSelector($button),
+                    label,
+                });
+            }
+        });
+        // Scan action links (anchors with JS behavior)
+        $('a[href^="#"], a[href^="javascript:"], a[onclick]').each((_, link) => {
+            const $link = $(link);
+            const label = $link.text().trim();
+            const id = $link.attr('id');
+            if (label) {
+                elements.push({
+                    type: 'link',
+                    id: id || undefined,
+                    selector: id ? `#${id}` : this.getSelector($link),
+                    label,
+                });
+            }
+        });
+        // Scan search inputs (common pattern)
+        $('input[type="search"], input[name*="search"], input[name*="query"], input[name="q"]').each((_, input) => {
+            const $input = $(input);
+            const $form = $input.closest('form');
+            // Skip if already captured as form
+            if ($form.length > 0)
+                return;
+            const name = $input.attr('name') || 'search';
+            const placeholder = $input.attr('placeholder');
+            elements.push({
+                type: 'search',
+                selector: this.getSelector($input),
+                label: placeholder || 'Search',
+                inputs: [{
+                        name,
+                        type: 'search',
+                        placeholder: placeholder || undefined,
+                        required: false,
+                    }],
+            });
+        });
+        return {
+            url,
+            scannedAt: new Date().toISOString(),
+            elements,
+            apiCalls: [], // Can't detect API calls without JS execution
+            meta: {
+                scanner: 'cheerio',
+                note: 'Static HTML scan. Use --browser flag for JavaScript-rendered content.',
+            },
+        };
+    }
+    /**
+     * Optional: Full browser scanning with Playwright
+     * Required for SPAs and JavaScript-heavy sites
+     */
+    async scanWithBrowser(url, options) {
+        let playwright;
         try {
-            // Navigate and wait for load
-            await page.goto(url, { waitUntil: 'networkidle' });
-            // Collect API calls
+            playwright = await import('playwright');
+        }
+        catch {
+            throw new Error('Playwright is required for --browser mode but not installed.\n\n' +
+                'Install it with:\n' +
+                '  npm install playwright\n' +
+                '  npx playwright install chromium\n\n' +
+                'Or use the default mode (without --browser) for static HTML sites.');
+        }
+        const browser = await playwright.chromium.launch({ headless: true });
+        const page = await browser.newPage();
+        try {
             const apiCalls = [];
+            // Capture API calls
             page.on('request', (request) => {
                 const reqUrl = request.url();
                 if (reqUrl.includes('/api/') || request.resourceType() === 'fetch' || request.resourceType() === 'xhr') {
@@ -20,66 +160,59 @@ class Scanner {
                     });
                 }
             });
-            // Scan for elements
-            const elements = await this.scanElements(page);
+            await page.goto(url, { waitUntil: 'networkidle' });
+            // Scan elements using Playwright
+            const elements = await this.scanElementsWithPlaywright(page);
             return {
                 url,
                 scannedAt: new Date().toISOString(),
                 elements,
                 apiCalls,
+                meta: {
+                    scanner: 'playwright',
+                    note: 'Full browser scan with JavaScript execution.',
+                },
             };
         }
         finally {
-            await page.close();
+            await browser.close();
         }
     }
-    async scanElements(page) {
+    async scanElementsWithPlaywright(page) {
         const elements = [];
         // Scan forms
         const forms = await page.$$('form');
         for (const form of forms) {
             const id = await form.getAttribute('id');
-            const inputs = await this.getFormInputs(form);
+            const inputs = await this.getFormInputsPlaywright(form, page);
             const submitBtn = await form.$('button[type="submit"], input[type="submit"]');
             elements.push({
                 type: 'form',
                 id: id || undefined,
                 selector: id ? `#${id}` : 'form',
-                label: await this.getLabel(form) || 'Form',
+                label: await this.getLabelPlaywright(form) || 'Form',
                 inputs,
                 submitButton: submitBtn ? {
-                    selector: await this.getSelector(submitBtn),
+                    selector: await this.getSelectorPlaywright(submitBtn),
                     label: await submitBtn.textContent() || 'Submit',
                 } : undefined,
             });
         }
-        // Scan buttons (not in forms)
+        // Scan buttons
         const buttons = await page.$$('button:not(form button), [role="button"]');
         for (const button of buttons) {
             const label = await button.textContent();
             if (label?.trim()) {
                 elements.push({
                     type: 'button',
-                    selector: await this.getSelector(button),
-                    label: label.trim(),
-                });
-            }
-        }
-        // Scan links with actions
-        const actionLinks = await page.$$('a[href^="#"], a[href^="javascript:"], a[onclick]');
-        for (const link of actionLinks) {
-            const label = await link.textContent();
-            if (label?.trim()) {
-                elements.push({
-                    type: 'link',
-                    selector: await this.getSelector(link),
+                    selector: await this.getSelectorPlaywright(button),
                     label: label.trim(),
                 });
             }
         }
         return elements;
     }
-    async getFormInputs(form) {
+    async getFormInputsPlaywright(form, page) {
         const inputs = [];
         const inputElements = await form.$$('input, select, textarea');
         for (const input of inputElements) {
@@ -87,12 +220,10 @@ class Scanner {
             const type = await input.getAttribute('type') || 'text';
             const required = await input.getAttribute('required') !== null;
             const placeholder = await input.getAttribute('placeholder');
-            const label = await this.getInputLabel(input);
             if (name && type !== 'hidden' && type !== 'submit') {
                 inputs.push({
                     name,
                     type,
-                    label: label || undefined,
                     required,
                     placeholder: placeholder || undefined,
                 });
@@ -100,28 +231,7 @@ class Scanner {
         }
         return inputs;
     }
-    async getInputLabel(input) {
-        try {
-            const id = await input.getAttribute('id');
-            if (id) {
-                // Use evaluate to find the label in the DOM
-                const labelText = await input.evaluate((el) => {
-                    const id = el.getAttribute('id');
-                    if (id) {
-                        const label = document.querySelector(`label[for="${id}"]`);
-                        return label?.textContent || null;
-                    }
-                    return null;
-                });
-                return labelText;
-            }
-        }
-        catch {
-            // Ignore errors
-        }
-        return null;
-    }
-    async getLabel(element) {
+    async getLabelPlaywright(element) {
         const ariaLabel = await element.getAttribute('aria-label');
         if (ariaLabel)
             return ariaLabel;
@@ -130,7 +240,7 @@ class Scanner {
             return title;
         return null;
     }
-    async getSelector(element) {
+    async getSelectorPlaywright(element) {
         const id = await element.getAttribute('id');
         if (id)
             return `#${id}`;
@@ -140,19 +250,20 @@ class Scanner {
             if (classes.length > 0)
                 return `.${classes[0]}`;
         }
-        const tagName = await element.evaluate((el) => el.tagName.toLowerCase());
-        return tagName;
+        return 'element';
     }
-    async ensureBrowser() {
-        if (!this.browser) {
-            this.browser = await chromium.launch({ headless: true });
+    getSelector($el) {
+        const id = $el.attr('id');
+        if (id)
+            return `#${id}`;
+        const className = $el.attr('class');
+        if (className) {
+            const classes = className.split(' ').filter(c => c && !c.includes(':'));
+            if (classes.length > 0)
+                return `.${classes[0]}`;
         }
-    }
-    async close() {
-        if (this.browser) {
-            await this.browser.close();
-            this.browser = null;
-        }
+        const tagName = $el.prop('tagName')?.toLowerCase();
+        return tagName || 'element';
     }
 }
 export const scanner = new Scanner();
