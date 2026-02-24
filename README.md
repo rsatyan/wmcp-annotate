@@ -15,22 +15,56 @@ Google and Microsoft shipped [WebMCP in Chrome 146](https://webmcp.link) (Februa
 
 **The solution:** `wmcp-annotate` automates the entire process.
 
+## Installation
+
+```bash
+npm install -g wmcp-annotate
+```
+
+## Configuration
+
+For AI-powered suggestions (`suggest` command), configure your preferred AI provider:
+
+### Option 1: Anthropic (Claude)
+```bash
+export ANTHROPIC_API_KEY=your_api_key_here
+export WMCP_MODEL=claude-sonnet-4-20250514  # optional
+```
+
+### Option 2: OpenAI (GPT-4)
+```bash
+export OPENAI_API_KEY=your_api_key_here
+export WMCP_MODEL=gpt-4o  # optional
+```
+
+### Option 3: OpenAI-compatible APIs (Groq, Together, etc.)
+```bash
+export OPENAI_API_KEY=your_api_key_here
+export OPENAI_BASE_URL=https://api.groq.com/openai
+export WMCP_MODEL=llama-3.3-70b-versatile
+```
+
+### Option 4: Ollama (Local, free)
+```bash
+export OLLAMA_HOST=http://localhost:11434
+export WMCP_MODEL=llama3
+```
+
+> **Note:** You bring your own API key and pay for your own usage. This tool does not provide AI inference.
+
 ## Quick Start
 
 ```bash
-# Install
-npm install -g wmcp-annotate
-
-# Scan a website
+# Scan a website (no API key required)
 wmcp-annotate scan https://your-site.com
 
-# Get AI-powered tool suggestions
+# Get AI-powered tool suggestions (requires AI provider config)
 wmcp-annotate suggest https://your-site.com
 
-# Generate ready-to-use code
+# Generate ready-to-use code (no API key required)
 wmcp-annotate generate https://your-site.com --format typescript
 
-# Validate your implementation
+# Validate your implementation (no API key required)
 wmcp-annotate validate https://your-site.com
 ```
 
@@ -47,7 +81,7 @@ wmcp-annotate scan https://example.com --depth 3 --output scan.json
 
 ### `suggest` - Get tool definitions
 
-AI-powered analysis to generate WebMCP tool definitions.
+AI-powered analysis to generate WebMCP tool definitions. Requires an AI provider to be configured.
 
 ```bash
 wmcp-annotate suggest https://example.com
@@ -79,11 +113,9 @@ navigator.modelContext.registerTool({
     required: ["query"]
   },
   async execute({ query }) {
-    // Auto-generated implementation
     const form = document.querySelector('#search-form');
     form.querySelector('input[name="query"]').value = query;
     form.submit();
-    // ...
   }
 });
 ```
@@ -105,30 +137,21 @@ wmcp-annotate validate https://example.com --strict --ci
   run: npx wmcp-annotate validate ${{ env.DEPLOY_URL }} --ci
 ```
 
-## Pricing
-
-| Plan | Price | Features |
-|------|-------|----------|
-| **Open Source** | Free | Scan, generate, validate. 10 AI suggestions/day |
-| **Pro** | $49/mo | Unlimited AI, inject command, CI integration |
-| **Enterprise** | $499/mo | Team workspaces, SSO, audit logs, priority support |
-
-## Contact
-
-For enterprise licensing, custom integrations, or support:
-
-📧 [rsatyan@gmail.com](mailto:rsatyan@gmail.com)
-
 ## Why wmcp-annotate?
 
 - **First mover**: Built for the WebMCP standard from day one
-- **AI-powered**: Smart tool suggestions, not just DOM parsing
+- **Flexible**: Works with any AI provider (OpenAI, Anthropic, Ollama, etc.)
 - **Framework support**: React, Vue, Svelte, vanilla JS
 - **CI-ready**: GitHub Actions integration out of the box
+- **100% Free & Open Source**
 
 ## Contributing
 
 We welcome contributions! Open an issue or submit a PR.
+
+## Contact
+
+📧 [rsatyan@gmail.com](mailto:rsatyan@gmail.com)
 
 ## License
 
