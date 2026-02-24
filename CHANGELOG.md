@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2026-02-24
+
+### Fixed
+- **Spec compliance**: Generated code now uses `annotations.readOnlyHint` instead of `readOnly` (per WebMCP spec)
+- **Spec compliance**: Execute callback now includes `client` parameter (per WebMCP spec)
+- Validated against official spec at webmachinelearning.github.io/webmcp/
+
+## [1.0.2] - 2026-02-24
+
+### Added
+- `--browser` flag now available on `suggest` and `generate` commands (not just `scan`)
+- SPAs can now be processed end-to-end: `wmcp-annotate generate https://spa.com --browser`
+
 ## [1.0.1] - 2026-02-24
 
 ### Changed

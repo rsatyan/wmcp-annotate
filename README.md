@@ -84,6 +84,7 @@ Uses AI to create meaningful WebMCP tool definitions from scan results.
 
 ```bash
 wmcp-annotate suggest https://example.com
+wmcp-annotate suggest https://react-app.com --browser  # For SPAs
 wmcp-annotate suggest --scan-file scan.json --output tools.json
 ```
 
@@ -95,8 +96,9 @@ Creates ready-to-use JavaScript/TypeScript code.
 
 ```bash
 wmcp-annotate generate https://example.com --format js
-wmcp-annotate generate https://example.com --format typescript
+wmcp-annotate generate https://example.com --format ts
 wmcp-annotate generate https://example.com --format react
+wmcp-annotate generate https://react-app.com --browser --format ts  # For SPAs
 ```
 
 ### `validate` — Check compliance
@@ -153,11 +155,12 @@ wmcp-annotate scan https://react-app.com --browser
 
 ## Example Output
 
+Generated code is fully compliant with the [WebMCP spec](https://webmachinelearning.github.io/webmcp/):
+
 ```typescript
 navigator.modelContext.registerTool({
   name: "searchProducts",
   description: "Search the product catalog by keyword",
-  readOnly: true,
   inputSchema: {
     type: "object",
     properties: {
@@ -165,10 +168,14 @@ navigator.modelContext.registerTool({
     },
     required: ["query"]
   },
-  async execute({ query }) {
+  annotations: { readOnlyHint: true },
+  async execute({ query }, client) {
     const form = document.querySelector('#search-form');
     form.querySelector('input[name="q"]').value = query;
     form.submit();
+    return {
+      content: [{ type: "text", text: JSON.stringify({ success: true }) }]
+    };
   }
 });
 ```

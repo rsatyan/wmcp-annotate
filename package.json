@@ -32,6 +32,7 @@
     "type": "git",
     "url": "https://github.com/rsatyan/wmcp-annotate"
   },
+  "homepage": "https://github.com/rsatyan/wmcp-annotate#readme",
   "bugs": {
     "url": "https://github.com/rsatyan/wmcp-annotate/issues"
   },
