@@ -11,7 +11,7 @@ const program = new Command();
 program
   .name('wmcp-annotate')
   .description('Make any website AI-agent ready with WebMCP annotations')
-  .version('1.0.1');
+  .version('1.0.2');
 
 program
   .command('scan <url>')
@@ -29,6 +29,7 @@ program
   .option('-s, --scan-file <file>', 'Use existing scan output')
   .option('-o, --output <file>', 'Output file')
   .option('-f, --format <format>', 'Output format: json, yaml', 'json')
+  .option('-b, --browser', 'Use browser engine for JavaScript-heavy sites (requires Playwright)')
   .action(suggestCommand);
 
 program
@@ -38,6 +39,7 @@ program
   .option('-o, --output <file>', 'Output file')
   .option('-f, --format <format>', 'Output format: js, ts, react, vue', 'js')
   .option('-m, --module <type>', 'Module format: esm, cjs', 'esm')
+  .option('-b, --browser', 'Use browser engine for JavaScript-heavy sites (requires Playwright)')
   .action(generateCommand);
 
 program

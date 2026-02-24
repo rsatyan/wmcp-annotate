@@ -16,8 +16,9 @@ export async function generateCommand(url: string | undefined, options: Generate
       spinner.text = 'Loading suggestions file...';
       suggestions = await readInput<SuggestResult>(options.suggestFile);
     } else if (url) {
-      spinner.text = `Scanning ${url}...`;
-      const scanResult = await scanner.scan(url, { depth: 1 });
+      const mode = options.browser ? 'browser' : 'static HTML';
+      spinner.text = `Scanning ${url} (${mode})...`;
+      const scanResult = await scanner.scan(url, { depth: 1, browser: options.browser });
       
       spinner.text = 'Generating tool suggestions...';
       suggestions = await analyzer.suggest(scanResult);

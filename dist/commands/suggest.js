@@ -13,8 +13,9 @@ export async function suggestCommand(url, options) {
             scanResult = await readInput(options.scanFile);
         }
         else if (url) {
-            spinner.text = `Scanning ${url}...`;
-            scanResult = await scanner.scan(url, { depth: 1 });
+            const mode = options.browser ? 'browser' : 'static HTML';
+            spinner.text = `Scanning ${url} (${mode})...`;
+            scanResult = await scanner.scan(url, { depth: 1, browser: options.browser });
         }
         else {
             throw new Error('Either URL or --scan-file is required');

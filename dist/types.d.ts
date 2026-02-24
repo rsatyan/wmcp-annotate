@@ -100,12 +100,14 @@ export interface SuggestOptions {
     scanFile?: string;
     output?: string;
     format: string;
+    browser?: boolean;
 }
 export interface GenerateOptions {
     suggestFile?: string;
     output?: string;
     format: string;
     module: string;
+    browser?: boolean;
 }
 export interface ValidateOptions {
     output?: string;
