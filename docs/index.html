@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wmcp-annotate - Make Any Website AI-Agent Ready in 5 Minutes</title>
+    <meta name="description" content="Automatically generate WebMCP tool annotations for your site. Let AI agents interact with your web app through the new W3C standard.">
+    <meta property="og:title" content="wmcp-annotate - Make Any Website AI-Agent Ready">
+    <meta property="og:description" content="Generate WebMCP annotations in one command. The fastest path to AI-agent compatibility.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://wmcp-annotate.dev">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --bg: #0f0f13;
+            --bg-light: #18181f;
+            --text: #e4e4e7;
+            --text-muted: #a1a1aa;
+            --border: #27272a;
+            --success: #22c55e;
+            --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        
+        /* Nav */
+        nav {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(15, 15, 19, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+        
+        /* Hero */
+        .hero {
+            padding: 100px 0 80px;
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+        .hero-badge span { color: var(--success); }
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+        h1 .highlight {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-sub {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        .hero-code {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px 32px;
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+        .hero-code .prompt { color: var(--text-muted); }
+        .hero-code .cmd { color: var(--primary); }
+        .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .btn {
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3); }
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+        .btn-secondary:hover { border-color: var(--text-muted); }
+        
+        /* Problem */
+        .problem {
+            padding: 80px 0;
+            background: var(--bg-light);
+        }
+        .problem h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .problem-sub {
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 48px;
+            font-size: 1.1rem;
+        }
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .problem-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .problem-card .icon { font-size: 2rem; margin-bottom: 16px; }
+        .problem-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+        .problem-card p { color: var(--text-muted); font-size: 0.95rem; }
+        
+        /* Features */
+        .features { padding: 100px 0; }
+        .features h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .features-sub {
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 64px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+        }
+        .feature-card {
+            padding: 32px;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: border-color 0.2s;
+        }
+        .feature-card:hover { border-color: var(--primary); }
+        .feature-card .icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .feature-card h3 { font-size: 1.25rem; margin-bottom: 12px; }
+        .feature-card p { color: var(--text-muted); }
+        
+        /* How it works */
+        .how-it-works {
+            padding: 100px 0;
+            background: var(--bg-light);
+        }
+        .how-it-works h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 64px;
+        }
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+        }
+        .step {
+            text-align: center;
+        }
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin: 0 auto 20px;
+        }
+        .step h3 { margin-bottom: 12px; }
+        .step p { color: var(--text-muted); font-size: 0.95rem; }
+        .step code {
+            display: block;
+            background: var(--bg);
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            margin-top: 16px;
+            color: var(--primary);
+        }
+        
+        /* Pricing */
+        .pricing { padding: 100px 0; }
+        .pricing h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .pricing-sub {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 64px;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .pricing-card {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+        }
+        .pricing-card.featured {
+            border-color: var(--primary);
+            position: relative;
+        }
+        .pricing-card.featured::before {
+            content: 'Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient);
+            padding: 4px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .pricing-card h3 { font-size: 1.5rem; margin-bottom: 8px; }
+        .pricing-card .price {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .pricing-card .price span { font-size: 1rem; color: var(--text-muted); }
+        .pricing-card .desc { color: var(--text-muted); margin-bottom: 24px; }
+        .pricing-card ul {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+        .pricing-card li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pricing-card li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+        }
+        .pricing-card .btn { width: 100%; text-align: center; }
+        
+        /* CTA */
+        .final-cta {
+            padding: 100px 0;
+            background: var(--bg-light);
+            text-align: center;
+        }
+        .final-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+        }
+        .final-cta p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 32px;
+        }
+        .final-cta .hero-code { margin-bottom: 32px; }
+        
+        /* Footer */
+        footer {
+            padding: 48px 0;
+            border-top: 1px solid var(--border);
+        }
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        .footer-links { display: flex; gap: 32px; }
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover { color: var(--text); }
+        .footer-copy { color: var(--text-muted); font-size: 0.9rem; }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero { padding: 60px 0 40px; }
+            .hero-code { padding: 16px 20px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">wmcp-<span>annotate</span></a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="https://github.com/avatarconsulting/wmcp-annotate">GitHub</a>
+                <a href="https://github.com/avatarconsulting/wmcp-annotate#readme">Docs</a>
+                <a href="#pricing" class="btn btn-primary" style="padding: 10px 20px;">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">
+                <span>●</span> Now supporting Chrome 146 + WebMCP
+            </div>
+            <h1>Make Any Website<br><span class="highlight">AI-Agent Ready</span><br>in 5 Minutes</h1>
+            <p class="hero-sub">Automatically generate WebMCP tool annotations for your site. Let AI agents interact with your web app through the new W3C standard.</p>
+            <div class="hero-code">
+                <span class="prompt">$</span> <span class="cmd">npx wmcp-annotate generate https://your-site.com</span>
+            </div>
+            <div class="cta-buttons">
+                <a href="#pricing" class="btn btn-primary">Get Started Free</a>
+                <a href="https://github.com/avatarconsulting/wmcp-annotate" class="btn btn-secondary">View on GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="problem">
+        <div class="container">
+            <h2>AI Agents Can't Use Your Website. Yet.</h2>
+            <p class="problem-sub">Google and Microsoft shipped WebMCP in Chrome 146—a W3C standard that lets websites declare tools for AI. Without it, agents resort to...</p>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="icon">❌</div>
+                    <h3>Fragile DOM Scraping</h3>
+                    <p>CSS changes break everything. Selectors drift. Automations fail silently.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="icon">💸</div>
+                    <h3>Expensive Screenshots</h3>
+                    <p>2000+ tokens per page to analyze a screenshot. Adds up fast at scale.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="icon">🔄</div>
+                    <h3>Constant Maintenance</h3>
+                    <p>Every UI update means updating automation scripts. Endless busywork.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2>From Zero to AI-Ready in One Command</h2>
+            <p class="features-sub">wmcp-annotate handles the heavy lifting so you can focus on your product.</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="icon">🔍</div>
+                    <h3>Smart Scanning</h3>
+                    <p>Automatically identifies every actionable element: forms, buttons, links, API calls. Works with SPAs and auth-protected pages.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🤖</div>
+                    <h3>AI-Powered Suggestions</h3>
+                    <p>Claude-powered analysis generates meaningful tool names, descriptions, and schemas. Real semantic understanding, not just parsing.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">💻</div>
+                    <h3>Multi-Framework Output</h3>
+                    <p>Generate code for vanilla JS, TypeScript, React, Vue, or Svelte. Copy-paste into your project and you're done.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">✅</div>
+                    <h3>CI Integration</h3>
+                    <p>Add WebMCP validation to your CI pipeline. Catch compliance issues before they hit production.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🏢</div>
+                    <h3>Enterprise Ready</h3>
+                    <p>Team workspaces, SSO/SAML, audit logs, priority support. Built for regulated industries.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📊</div>
+                    <h3>Compliance Reports</h3>
+                    <p>Generate detailed reports for stakeholders. Show exactly which tools are implemented and their status.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Scan</h3>
+                    <p>Analyze your site in seconds. Identify forms, buttons, and API endpoints.</p>
+                    <code>wmcp-annotate scan https://your-site.com</code>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Generate</h3>
+                    <p>AI generates WebMCP tool definitions with ready-to-use code.</p>
+                    <code>wmcp-annotate generate https://your-site.com</code>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Integrate</h3>
+                    <p>Copy the generated code into your app. That's it.</p>
+                    <code>// Paste into your app</code>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Validate</h3>
+                    <p>Add to CI. Never ship broken WebMCP again.</p>
+                    <code>wmcp-annotate validate --ci</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2>Simple, Transparent Pricing</h2>
+            <p class="pricing-sub">Start free. Scale when you need to.</p>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Open Source</h3>
+                    <div class="price">$0 <span>forever</span></div>
+                    <p class="desc">Perfect for individual developers</p>
+                    <ul>
+                        <li>Scan, generate, validate commands</li>
+                        <li>10 AI suggestions per day</li>
+                        <li>All output formats</li>
+                        <li>Community support</li>
+                    </ul>
+                    <a href="https://www.npmjs.com/package/wmcp-annotate" class="btn btn-secondary">Install Free</a>
+                </div>
+                <div class="pricing-card featured">
+                    <h3>Pro</h3>
+                    <div class="price">$49 <span>/month</span></div>
+                    <p class="desc">For teams shipping AI-ready products</p>
+                    <ul>
+                        <li>Everything in Free</li>
+                        <li>Unlimited AI suggestions</li>
+                        <li>Inject command (auto-add to codebase)</li>
+                        <li>CI/CD integration</li>
+                        <li>Email support</li>
+                    </ul>
+                    <a href="mailto:hello@avatarconsulting.com?subject=wmcp-annotate Pro" class="btn btn-primary">Start Free Trial</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="price">$499 <span>/month</span></div>
+                    <p class="desc">For organizations at scale</p>
+                    <ul>
+                        <li>Everything in Pro</li>
+                        <li>Team workspaces</li>
+                        <li>SSO / SAML</li>
+                        <li>Audit logs</li>
+                        <li>Custom integrations</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <a href="mailto:enterprise@avatarconsulting.com?subject=wmcp-annotate Enterprise" class="btn btn-secondary">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta">
+        <div class="container">
+            <h2>Ready to Make Your Site AI-Ready?</h2>
+            <p>Join developers already using wmcp-annotate to ship AI-compatible products faster.</p>
+            <div class="hero-code">
+                <span class="prompt">$</span> <span class="cmd">npm install -g wmcp-annotate</span>
+            </div>
+            <div class="cta-buttons">
+                <a href="https://www.npmjs.com/package/wmcp-annotate" class="btn btn-primary">Get Started Free</a>
+                <a href="mailto:hello@avatarconsulting.com?subject=wmcp-annotate Demo" class="btn btn-secondary">Book a Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/avatarconsulting/wmcp-annotate">GitHub</a>
+                <a href="https://github.com/avatarconsulting/wmcp-annotate#readme">Documentation</a>
+                <a href="mailto:hello@avatarconsulting.com">Contact</a>
+            </div>
+            <p class="footer-copy">Built by <a href="https://avatarconsulting.com" style="color: var(--primary);">Avatar Consulting</a> — AI Transformation for Financial Services</p>
+        </div>
+    </footer>
+</body>
+</html>
