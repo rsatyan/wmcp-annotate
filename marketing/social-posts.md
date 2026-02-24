@@ -1,192 +1,246 @@
-# Social Media Posts - wmcp-annotate
+# Social Media Posts - Authority Positioning
 
-## LinkedIn Post
-
----
-
-**Google just changed how AI agents interact with websites. Is your site ready?**
-
-Two weeks ago, Google and Microsoft shipped WebMCP in Chrome 146—a W3C standard that lets websites declare structured tools for AI agents.
-
-Instead of AI scraping your DOM or analyzing screenshots (expensive, fragile), WebMCP lets you tell agents exactly what your site can do.
-
-The problem? 99% of sites don't have these annotations yet.
-
-So we built wmcp-annotate.
-
-One command:
-```
-npx wmcp-annotate generate https://your-site.com
-```
-
-It scans your site, uses AI to suggest tool definitions, and generates ready-to-use code.
-
-Think of it as "making your website API-first for AI."
-
-We're launching today. Open source core, Pro tier for teams.
-
-→ GitHub: [link]
-→ Try it: npm install -g wmcp-annotate
-
-If you're building AI agents or want your SaaS to be agent-friendly, this is the fastest path.
-
-Questions? Drop them below.
-
-#AI #WebDevelopment #Automation #AIAgents #WebMCP
+## LinkedIn Post (Thought Leadership)
 
 ---
 
-## Twitter/X Thread
+**WebMCP is the most underrated infrastructure change of 2026.**
+
+Two weeks ago, Google and Microsoft shipped a W3C standard that fundamentally changes how AI agents interact with the web.
+
+It's called WebMCP (Web Model Context Protocol), and almost no one is talking about it.
+
+Here's why it matters:
+
+Today, when an AI agent needs to interact with a website, it has two options:
+1. Scrape the DOM (fragile, breaks constantly)
+2. Analyze screenshots (expensive, ~2000 tokens per page)
+
+WebMCP introduces a third option: websites declare structured tools that agents can call directly.
+
+Think of it as "APIs for AI agents" — but built into the browser itself.
+
+The implications:
+→ 89% reduction in token costs for web automation
+→ Stable automation that survives CSS changes
+→ A new primitive for agent-to-agent commerce
+
+But here's the problem: the standard shipped, browsers support it, and yet 99% of websites have zero WebMCP annotations.
+
+So I built a tool to fix that.
+
+**wmcp-annotate** analyzes any website and generates WebMCP tool definitions automatically. Scan, suggest, generate, validate — the full workflow.
+
+It's open source. Use any AI provider. No lock-in.
+
+→ npm install -g wmcp-annotate
+→ GitHub: https://github.com/rsatyan/wmcp-annotate
+
+If you're building AI agents or thinking about web automation, WebMCP is the infrastructure layer you need to understand.
+
+Happy to discuss — drop questions below or DM me.
+
+#AI #WebDevelopment #Infrastructure #OpenSource
 
 ---
 
-🧵 Google just shipped the biggest change to web automation since Selenium.
-
-WebMCP is now in Chrome 146.
-
-Here's what it means and how to get your site ready in 5 minutes:
-
-(1/10)
+## Twitter/X Thread (Educational)
 
 ---
 
-WebMCP lets websites declare "tools" that AI agents can call directly.
+WebMCP might be the most important web standard you've never heard of.
 
-No more:
-- DOM scraping
-- Screenshot analysis (2000+ tokens each!)
-- Broken automation when CSS changes
+Let me explain why it changes everything for AI agents. 🧵
 
-(2/10)
+(1/8)
 
 ---
 
-Instead, your site says:
+Two weeks ago, Google and Microsoft shipped WebMCP in Chrome 146.
 
-"Here's a searchProducts tool. It takes a query string. Here's how to call it."
+It's a W3C standard that lets websites declare "tools" for AI agents.
 
-The AI agent calls the tool. Gets structured data back. Done.
+No more DOM scraping. No more screenshot parsing.
 
-(3/10)
+(2/8)
 
 ---
 
-This is huge for:
-- AI assistants browsing for users
-- Automation workflows
-- Agent-to-agent commerce
-- Accessibility
+Here's the problem it solves:
 
-(4/10)
+AI agents interacting with websites today are fragile.
+- CSS changes break selectors
+- Screenshots cost ~2000 tokens each
+- Every site needs custom automation
+
+WebMCP fixes all of this.
+
+(3/8)
+
+---
+
+With WebMCP, a website says:
+
+"I have a searchProducts tool. It takes a query string. Call it like this."
+
+The agent calls it. Gets structured data. Done.
+
+It's APIs for AI — built into the browser.
+
+(4/8)
+
+---
+
+The impact:
+- 89% fewer tokens for web interactions
+- Automation that survives redesigns
+- A standard way for agents to discover capabilities
+
+This is infrastructure-level change.
+
+(5/8)
 
 ---
 
 The catch?
 
-99% of websites don't have WebMCP annotations.
+99% of websites don't have WebMCP annotations yet.
 
-Someone needs to add them.
+The standard exists. Browsers support it. But adoption is near zero.
 
-(5/10)
-
----
-
-Enter: wmcp-annotate
-
-We built a CLI that:
-1. Scans your site
-2. Identifies forms/buttons/APIs
-3. Uses AI to generate tool definitions
-4. Outputs ready-to-use code
-
-(6/10)
+(6/8)
 
 ---
 
-```bash
-npx wmcp-annotate generate https://your-site.com
-```
+So I built wmcp-annotate.
 
-That's it.
+It scans any website, uses AI to generate tool definitions, and outputs production code.
 
-You get JavaScript you can copy-paste into your app.
-
-(7/10)
-
----
-
-We also added:
-
-- TypeScript support
-- React/Vue hooks
-- CI validation
-- Compliance reports
-
-(8/10)
-
----
-
-Open source core. Free to use.
-
-Pro tier ($49/mo) for unlimited AI + CI integration.
-
-Enterprise for teams ($499/mo).
-
-(9/10)
-
----
-
-Try it now:
+Open source. Works with any AI provider.
 
 npm install -g wmcp-annotate
 
-GitHub: [link]
-Docs: wmcp-annotate.dev
-
-If you're building AI agents, this is essential.
-
-(10/10)
+(7/8)
 
 ---
 
-## Hacker News Post
+If you're building AI agents, this is the infrastructure shift to watch.
+
+WebMCP is to AI agents what REST was to mobile apps.
+
+The question isn't if adoption happens. It's how fast.
+
+GitHub: https://github.com/rsatyan/wmcp-annotate
+
+(8/8)
 
 ---
 
-**Title:** Show HN: wmcp-annotate – Make any website AI-agent ready with WebMCP
+## Hacker News Post (Technical Depth)
+
+---
+
+**Title:** WebMCP: The W3C standard that changes AI-web interaction (and a tool to accelerate adoption)
 
 **Text:**
 
-Hey HN,
+Two weeks ago, Chrome 146 shipped with WebMCP support — a W3C standard developed jointly by Google and Microsoft that introduces a new primitive for AI agent interaction with websites.
 
-Two weeks ago, Google and Microsoft shipped WebMCP in Chrome 146 (https://webmcp.link). It's a W3C standard that lets websites declare structured tools for AI agents—no more DOM scraping or screenshot parsing.
-
-We built wmcp-annotate to help developers adopt it quickly.
-
-**What it does:**
-- Scans any website and identifies forms, buttons, API calls
-- Uses Claude to generate meaningful tool definitions
-- Outputs ready-to-use JS/TS/React code
-- Validates existing implementations
-
-**Usage:**
-```
-npm install -g wmcp-annotate
-wmcp-annotate generate https://your-site.com --format typescript
-```
+The core idea: instead of agents scraping DOM or parsing screenshots, websites declare structured tools via `navigator.modelContext.registerTool()`. Agents discover and call these tools directly.
 
 **Why this matters:**
 
-AI agents currently waste ~2000 tokens per screenshot to understand a page. With WebMCP, it's ~100 tokens to call a declared tool. That's 95% cost reduction.
+1. **Token efficiency**: Screenshot-based approaches consume ~2000 tokens per page. WebMCP tool calls are ~100 tokens. That's 95% cost reduction at scale.
 
-Plus, the automation is stable—no more broken scripts when CSS changes.
+2. **Stability**: DOM scraping breaks when CSS changes. WebMCP tools are semantic — they survive redesigns.
 
-**Business model:**
+3. **Discoverability**: Agents can query what tools a site offers, enabling genuine agent-to-web interoperability.
 
-Open source CLI (MIT). Pro tier ($49/mo) for unlimited AI analysis and CI integration. Enterprise ($499/mo) for teams.
+**The adoption problem:**
 
-We're a small consulting firm (Avatar Consulting) that does AI transformation for banks. This came out of client work—everyone wanted their internal tools to be agent-accessible.
+The spec is solid. Browser support exists. But adoption is effectively zero. Most web developers haven't heard of it, and there's no tooling to help.
 
-Would love feedback on the tool and the approach. What's missing?
+**What I built:**
 
-GitHub: [link]
+`wmcp-annotate` is a CLI that:
+- Scans websites for actionable elements (forms, buttons, API calls)
+- Uses AI to generate semantic tool definitions
+- Outputs production-ready code (JS/TS/React/Vue)
+- Validates existing implementations against the spec
+
+It's designed to bootstrap adoption — take any existing website and make it WebMCP-ready in minutes.
+
+**Technical choices:**
+- Playwright for scanning (handles SPAs, auth)
+- Pluggable AI backends (Anthropic, OpenAI, Ollama, any OpenAI-compatible API)
+- User brings their own API keys — no hosted inference
+
+MIT licensed. Contributions welcome.
+
+I've been working at the intersection of AI infrastructure and web systems for a while. WebMCP feels like a genuine inflection point — the kind of standard that seems obvious in retrospect but requires ecosystem effort to bootstrap.
+
+Curious what HN thinks about:
+1. The WebMCP standard itself
+2. The adoption challenge
+3. What tooling the ecosystem needs
+
+GitHub: https://github.com/rsatyan/wmcp-annotate
+
+---
+
+## Short-form Posts (Twitter/LinkedIn)
+
+---
+
+**Post 1 (Observation):**
+WebMCP shipped in Chrome two weeks ago and the AI agent community barely noticed.
+
+This is REST for AI agents. Infrastructure-level change.
+
+If you're building agents that interact with the web, this is the standard to watch.
+
+---
+
+**Post 2 (Data point):**
+Cost of an AI agent analyzing a webpage:
+- Screenshot approach: ~2000 tokens
+- WebMCP tool call: ~100 tokens
+
+That's 95% cost reduction.
+
+WebMCP isn't just cleaner architecture — it's economically inevitable.
+
+---
+
+**Post 3 (Call to action):**
+Building AI agents? 
+
+Check if your target sites have WebMCP support:
+```
+npx wmcp-annotate validate https://example.com
+```
+
+Spoiler: they probably don't. Yet.
+
+---
+
+**Post 4 (Thought leadership):**
+The AI agent stack is crystallizing:
+
+- LLM layer: solved (mostly)
+- Tool calling: solved (function calling)
+- Web interaction: WebMCP (just shipped)
+- Memory/state: still messy
+
+We're one standard away from interoperable agents.
+
+---
+
+**Post 5 (Personal):**
+Open sourced my WebMCP tooling today.
+
+Not because I couldn't monetize it — because adoption matters more than revenue right now.
+
+If WebMCP wins, everyone building agents wins.
+
+github.com/rsatyan/wmcp-annotate

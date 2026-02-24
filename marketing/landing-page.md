@@ -1,165 +1,138 @@
-# Landing Page Copy - wmcp-annotate.dev
+# Landing Page Copy - wmcp-annotate
 
 ## Hero Section
 
 ### Headline
-**Make Any Website AI-Agent Ready in 5 Minutes**
+**The WebMCP Adoption Toolkit**
 
 ### Subheadline
-Automatically generate WebMCP tool annotations for your site. Let AI agents interact with your web app through the new W3C standard.
+Make any website AI-agent ready. Open source tooling for the new W3C standard that's changing how agents interact with the web.
 
 ### CTA
-[Get Started Free] [View Demo]
+[Get Started] [Read the Thesis]
 
 ---
 
-## Problem Section
+## The Thesis
 
 ### Headline
-**AI Agents Can't Use Your Website. Yet.**
+**WebMCP is infrastructure. We need to treat it that way.**
 
-Google and Microsoft just shipped WebMCP in Chrome 146. It's a new W3C standard that lets websites declare structured tools for AI agents.
+In February 2026, Chrome shipped support for WebMCP — a W3C standard that lets websites declare structured tools for AI agents.
 
-**The catch?** 99% of websites don't have the annotations.
+This isn't incremental. It's architectural.
 
-Without WebMCP, AI agents resort to:
-- ❌ Fragile DOM scraping
-- ❌ Expensive screenshot analysis (2000+ tokens per page)
-- ❌ Broken automations when UI changes
+Before WebMCP:
+- Agents scraped DOM (fragile)
+- Agents parsed screenshots (expensive)
+- Every website needed custom automation
+
+After WebMCP:
+- Websites declare capabilities
+- Agents discover and call tools directly
+- Standard interface, universal compatibility
+
+**The problem isn't the standard. It's adoption.**
+
+Browser support exists. The spec is stable. But 99% of websites have zero WebMCP annotations.
+
+Adoption needs tooling. That's why this exists.
 
 ---
 
-## Solution Section
+## What wmcp-annotate Does
 
 ### Headline
-**From Zero to AI-Ready in One Command**
+**From any website to WebMCP-ready in minutes**
 
 ```bash
-npx wmcp-annotate generate https://your-site.com
+# 1. Scan — discover actionable elements
+wmcp-annotate scan https://example.com
+
+# 2. Suggest — generate tool definitions with AI
+wmcp-annotate suggest https://example.com
+
+# 3. Generate — output production code
+wmcp-annotate generate https://example.com --format react
+
+# 4. Validate — check spec compliance
+wmcp-annotate validate https://example.com
 ```
 
-wmcp-annotate:
-1. **Scans** your website for forms, buttons, and APIs
-2. **Suggests** tool definitions using AI
-3. **Generates** ready-to-use JavaScript code
-4. **Validates** your implementation
+Works with any AI provider. You bring your keys. No lock-in.
 
 ---
 
-## Features Grid
+## Why Open Source?
 
-### 🔍 Smart Scanning
-Automatically identifies every actionable element: forms, buttons, links, API calls. Works with SPAs, dynamic content, auth-protected pages.
+### Headline
+**Adoption > Revenue**
 
-### 🤖 AI-Powered Suggestions
-Claude-powered analysis generates meaningful tool names, descriptions, and schemas. Not just DOM parsing—actual semantic understanding.
+WebMCP adoption benefits everyone building AI agents. Gatekeeping the tooling slows the ecosystem.
 
-### 💻 Multi-Framework Output
-Generate code for vanilla JS, TypeScript, React, Vue, or Svelte. Copy-paste into your project and you're done.
+This tool is MIT licensed. Fork it. Ship it. Make it better.
 
-### ✅ CI Integration
-Add WebMCP validation to your CI pipeline. Catch compliance issues before they hit production.
+If you're using this in production and want to contribute back — PRs welcome.
 
-### 🏢 Enterprise Ready
-Team workspaces, SSO/SAML, audit logs, priority support. Built for regulated industries.
-
-### 📊 Compliance Reports
-Generate detailed reports for stakeholders. Show exactly which tools are implemented and their compliance status.
+If you're adopting WebMCP at scale and want to talk architecture — reach out.
 
 ---
 
-## How It Works
+## Technical Details
 
-### Step 1: Scan
-```bash
-wmcp-annotate scan https://your-site.com
-```
-Analyzes your site in seconds. Identifies forms, buttons, and API endpoints.
+**Scanning:**
+- Playwright-based (handles SPAs, JavaScript rendering)
+- Discovers forms, buttons, links, API calls
+- Configurable depth for multi-page analysis
 
-### Step 2: Generate
-```bash
-wmcp-annotate generate https://your-site.com --format react
-```
-AI generates WebMCP tool definitions with ready-to-use code.
+**AI Integration:**
+- Pluggable backends: Anthropic, OpenAI, Ollama, any OpenAI-compatible API
+- User provides API keys
+- Customizable model selection via `WMCP_MODEL`
 
-### Step 3: Integrate
-Copy the generated code into your app. Done.
+**Code Generation:**
+- JavaScript, TypeScript, React, Vue, Svelte
+- Production-ready output
+- Follows WebMCP spec exactly
 
-### Step 4: Validate
-```bash
-wmcp-annotate validate https://your-site.com --ci
-```
-Add to CI. Never ship broken WebMCP again.
-
----
-
-## Pricing Section
-
-### Open Source - Free
-- Scan, generate, validate commands
-- 10 AI suggestions/day
-- Community support
-- [Get Started]
-
-### Pro - $49/month
-- Unlimited AI suggestions
-- Inject command (auto-add to codebase)
-- CI integration
-- Email support
-- [Start Free Trial]
-
-### Enterprise - $499/month
-- Team workspaces
-- SSO/SAML
-- Audit logs
-- Priority support
-- Custom integrations
-- [Contact Sales]
+**Validation:**
+- Checks existing implementations against W3C spec
+- CI-friendly exit codes
+- Detailed compliance reports
 
 ---
 
-## Social Proof (placeholder)
+## Who's Behind This
 
-> "We made our entire dashboard AI-agent ready in an afternoon. Game changer."
-> — CTO, Series B SaaS
+**Satyan Avatara**
 
-> "The CI integration caught 3 WebMCP regressions in our first week."
-> — Staff Engineer, Fortune 500
+Building at the intersection of AI infrastructure, web systems, and financial services.
 
----
+I've spent years working on how AI systems interact with existing software. WebMCP is the first time I've seen a standard that feels genuinely right for the problem.
 
-## FAQ
+This tool exists because I needed it. I'm open sourcing it because the ecosystem needs it.
 
-**What is WebMCP?**
-WebMCP (Web Model Context Protocol) is a W3C standard that lets websites declare structured tools for AI agents. Shipped in Chrome 146, February 2026.
-
-**Do I need Chrome 146?**
-For validation, yes. For scanning and generating, any modern browser works.
-
-**How does AI analysis work?**
-We use Claude to analyze your page elements and generate meaningful tool definitions. Your data is not stored.
-
-**Can I self-host?**
-Yes! The CLI is open source. Pro/Enterprise features require a license key.
+📧 rsatyan@gmail.com
+🐙 github.com/rsatyan
 
 ---
 
-## Final CTA
-
-### Ready to make your site AI-ready?
+## Get Started
 
 ```bash
 npm install -g wmcp-annotate
 wmcp-annotate scan https://your-site.com
 ```
 
-[Get Started Free] [Book a Demo]
+**Resources:**
+- [GitHub Repository](https://github.com/rsatyan/wmcp-annotate)
+- [WebMCP Spec](https://webmcp.link)
+- [Chrome 146 Release Notes](https://webmcp.link)
 
 ---
 
 ## Footer
 
-Built by Avatar Consulting
-Enterprise AI Transformation for Financial Services
+MIT License | Built for the WebMCP ecosystem
 
-[GitHub] [Documentation] [Blog] [Contact]
+Questions? rsatyan@gmail.com
