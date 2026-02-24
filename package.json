@@ -1,6 +1,6 @@
 {
   "name": "wmcp-annotate",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Make any website AI-agent ready with WebMCP annotations",
   "main": "dist/index.js",
   "bin": {

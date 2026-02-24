@@ -10,9 +10,9 @@ const jsTemplate = Handlebars.compile(`// WebMCP Tool Registration
 navigator.modelContext.registerTool({
   name: "{{name}}",
   description: "{{description}}",
-  readOnly: {{readOnly}},
   inputSchema: {{{schemaJson}}},
-  async execute({{#if hasInputs}}{ {{inputNames}} }{{/if}}) {
+  annotations: { readOnlyHint: {{readOnly}} },
+  async execute({{#if hasInputs}}{ {{inputNames}} }{{/if}}, client) {
     // TODO: Implement {{name}}
     // Source element: {{sourceElement.selector}}
     
@@ -55,9 +55,9 @@ interface {{pascalName}}Input {
 navigator.modelContext.registerTool({
   name: "{{name}}",
   description: "{{description}}",
-  readOnly: {{readOnly}},
   inputSchema: {{{schemaJson}}},
-  async execute(input: {{pascalName}}Input) {
+  annotations: { readOnlyHint: {{readOnly}} },
+  async execute(input: {{pascalName}}Input, client: ModelContextClient) {
     // TODO: Implement
     return { content: [{ type: "text", text: JSON.stringify({ success: true }) }] };
   }
@@ -84,9 +84,9 @@ export function useWebMCPTools() {
       navigator.modelContext.registerTool({
         name: "{{name}}",
         description: "{{description}}",
-        readOnly: {{readOnly}},
         inputSchema: {{{schemaJson}}},
-        async execute(input) {
+        annotations: { readOnlyHint: {{readOnly}} },
+        async execute(input, client) {
           // TODO: Implement
           return { content: [{ type: "text", text: JSON.stringify({ success: true }) }] };
         }

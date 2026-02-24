@@ -11,7 +11,7 @@ const program = new Command();
 program
   .name('wmcp-annotate')
   .description('Make any website AI-agent ready with WebMCP annotations')
-  .version('1.0.2');
+  .version('1.0.3');
 
 program
   .command('scan <url>')
