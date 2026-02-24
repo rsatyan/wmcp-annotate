@@ -1,10 +1,39 @@
+# Dependencies
 node_modules/
+
+# Build output
 dist/
+
+# Logs
 *.log
+npm-debug.log*
+
+# Environment
 .env
 .env.local
-*.tgz
-.DS_Store
-coverage/
+.env.*.local
+
+# IDE
 .idea/
 .vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# npm pack output
+*.tgz
+
+# Internal files (keep local, don't commit)
+AGENTS.md
+PRD.md
+LAUNCH.md
+PROMPT.md
+IMPLEMENTATION_PLAN.md
+marketing/
+scripts/

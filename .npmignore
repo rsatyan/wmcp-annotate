@@ -1,17 +1,33 @@
-# Exclude from npm package
-AGENTS.md
-PROMPT.md
-IMPLEMENTATION_PLAN.md
-PRD.md
-LAUNCH.md
-marketing/
-specs/
-tests/
+# Source (npm gets dist/ only)
 src/
-docs/
-scripts/
 *.ts
 tsconfig.json
+
+# Tests
+tests/
+coverage/
+*.test.js
+*.spec.js
+
+# Docs (separate from npm package)
+docs/
+specs/
+*.md
+!README.md
+
+# Dev tools
+.eslintrc*
+.prettierrc*
+.editorconfig
+.github/
+
+# Git
 .git/
 .gitignore
-*.map
+
+# Scripts
+scripts/
+
+# Other
+*.tgz
+*.log
